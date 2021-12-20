@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import { MaxUint256 } from '@ethersproject/constants'
 export const approve = async (contract,chef) => {
   console.log('ok')

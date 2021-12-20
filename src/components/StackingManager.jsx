@@ -3,8 +3,7 @@ import { Button } from "./DashBoard";
 import styled from "styled-components";
 import { useChefContract, useTokenContract } from "../hooks/useContract";
 import useAuth from "../hooks/useAuth";
-import { useEffect } from "react/cjs/react.development";
-import { ethers } from "ethers";
+
 import { approve } from "../utils/approve";
 import { toast } from "react-toastify";
 import { deposit, withdraw } from "../utils/poolUtils";
@@ -16,7 +15,8 @@ export const Input = styled.input`
   background: transparent;
   border: 2px solid #245ce7;
   border-radius: 15px;
-  width: 10rem;
+  //width: 10rem;
+
   position: relative;
   + span {
     display: block;
@@ -34,7 +34,7 @@ const StackingManager = () => {
   const [depositMode, setDepositMode] = useState(false);
   const [unstackMode, setUnstackMode] = useState(false);
   const [value, setValue] = useState(null);
-  const { active, account } = useAuth();
+  const { account } = useAuth();
 
   const [locked, setLocked] = useState(false);
 
@@ -45,13 +45,13 @@ const StackingManager = () => {
   return (
     <div className=" text-xl mt-8">
       {!depositMode && !unstackMode && (
-        <div className="flex justify-center">
+        <div className="flex justify-center flex-wrap">
           <Button
             onClick={() => {
               setDepositMode(true);
               setUnstackMode(false);
             }}
-            className="mx-4 hover-text hover-border"
+            className="mx-4 hover-text hover-border mb-2"
           >
             Stake
           </Button>
@@ -68,7 +68,7 @@ const StackingManager = () => {
       )}
       {depositMode && (
         <form
-          className="block flex mb-8 justify-center"
+          className="block sm:flex mb-8 justify-center flex-wrap"
           onSubmit={async (e) => {
             e.preventDefault();
             if (locked) return;
@@ -114,7 +114,7 @@ const StackingManager = () => {
             }
           }}
         >
-          <div className="relative">
+          <div className="relative mx-2 inline-block">
             <Input
               required
               value={value}
@@ -140,12 +140,14 @@ const StackingManager = () => {
               max
             </span>
           </div>
-          <Button className="ml-4 hover-border hover-text">Deposit</Button>
+          <Button className="hover-border hover-text mx-2 mt-8 sm:mt-0">
+            Deposit
+          </Button>
         </form>
       )}
       {unstackMode && (
         <form
-          className="block flex mb-8 justify-center"
+          className="block sm:flex mb-8 justify-center flex-wrap"
           onSubmit={async (e) => {
             e.preventDefault();
             if (locked) return;
@@ -191,7 +193,7 @@ const StackingManager = () => {
             }
           }}
         >
-          <div className="relative">
+          <div className="relative mx-2 inline-block">
             <Input
               required
               value={value}
@@ -224,7 +226,9 @@ const StackingManager = () => {
               max
             </span>
           </div>
-          <Button className="ml-4 hover-border hover-text">Withdraw</Button>
+          <Button className="hover-border hover-text mx-2 mt-8 sm:mt-0">
+            Withdraw
+          </Button>
         </form>
       )}
       {(depositMode || unstackMode) && (

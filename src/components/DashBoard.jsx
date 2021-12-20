@@ -1,6 +1,5 @@
-import { BigNumber, ethers } from "ethers";
-import { useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { ethers } from "ethers";
+import { useContext } from "react";
 import styled from "styled-components";
 import { dashboardContext } from "../contexts/dashboard-context.jsx";
 import useAuth from "../hooks/useAuth.js";
@@ -10,6 +9,7 @@ import {
 } from "../hooks/useContract.js";
 import { approve } from "../utils/approve.js";
 import StackingManager from "./StackingManager.jsx";
+import Loader from "react-loader-spinner";
 
 const Details = styled.ul`
   display: flex;
@@ -102,8 +102,8 @@ const DashBoard = () => {
   } = useContext(dashboardContext);
 
   return (
-    <div className="p-10 relative">
-      <div className="px-10 md:p-20 py-10 bg-box rounded-xl relative">
+    <div className="p-4 relative">
+      <div className="px-5 md:p-20 py-10 bg-box rounded-xl relative pt-20 md:pt-10">
         <span className="top0 absolute right-0 p-4 text-primary">
           {!active && (
             <>
@@ -117,7 +117,7 @@ const DashBoard = () => {
           )}
           {active && (
             <>
-              <span className="mr-4">
+              <span className="mr-4 block md:inline-block">
                 Balance: {ERC20Balance} {ERC20Name}
               </span>
               <span className="mr-4">
@@ -142,37 +142,109 @@ const DashBoard = () => {
         <Details>
           <li>
             <span>APY</span>
-            <span>{Math.round(apy * 100) / 100}%</span>
+            <span className="flex justify-center">
+              {!apy ? (
+                <Loader
+                  type="TailSpin"
+                  color="#00BFFF"
+                  className="inline-block"
+                  height={10}
+                  width={10}
+                />
+              ) : (
+                `${Math.round(apy * 100) / 100} %`
+              )}
+            </span>
           </li>
           <li>
             <span>Current MC</span>
-            <span>${marketcap}</span>
+            <span>
+              {!marketcap ? (
+                <Loader
+                  type="TailSpin"
+                  color="#00BFFF"
+                  className="inline-block"
+                  height={10}
+                  width={10}
+                />
+              ) : (
+                `$${marketcap}`
+              )}
+            </span>
           </li>
           <li>
             <span>Current price</span>
-            <span>${price}</span>
+            <span>
+              {!price ? (
+                <Loader
+                  type="TailSpin"
+                  color="#00BFFF"
+                  className="inline-block"
+                  height={10}
+                  width={10}
+                />
+              ) : (
+                `$${price}`
+              )}
+            </span>
           </li>
           <li>
             <span>Tokens deposited</span>
             <span>
-              {" "}
-              {userInfo?.amount
-                ? ethers.utils.formatEther(userInfo?.amount)
-                : 0}
+              {active && !userInfo?.amount ? (
+                <Loader
+                  type="TailSpin"
+                  color="#00BFFF"
+                  className="inline-block"
+                  height={10}
+                  width={10}
+                />
+              ) : (
+                `${
+                  userInfo?.amount
+                    ? ethers.utils.formatEther(userInfo?.amount)
+                    : 0
+                }`
+              )}
+              {}
             </span>
           </li>
           <li>
             <span>Tokens earned</span>
-            <span>{remainingRewards} ET</span>
+            <span>
+              {!remainingRewards ? (
+                <Loader
+                  type="TailSpin"
+                  color="#00BFFF"
+                  className="inline-block"
+                  height={10}
+                  width={10}
+                />
+              ) : (
+                `${remainingRewards} ET`
+              )}
+            </span>
           </li>
           <li>
             <span>Total tokens staked</span>
-            <span>{totalDeposited} ET</span>
+            <span>
+              {!totalDeposited ? (
+                <Loader
+                  type="TailSpin"
+                  color="#00BFFF"
+                  className="inline-block"
+                  height={10}
+                  width={10}
+                />
+              ) : (
+                `${totalDeposited} ET`
+              )}
+            </span>
           </li>
         </Details>
         <StackingManager />
         {!(allowance > 0) && (
-          <div className="md:flex mt-10">
+          <div className="md:flex mt-10 justify-center">
             <p className="mb-10 md:mb-none md:mr-10 text-left block">
               Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum
               dolor sit amet Lorem ipsum dolor sit amet
@@ -186,33 +258,95 @@ const DashBoard = () => {
         )}
 
         <Separation />
-        <StackingDetails>
-          <li>
-            <span>Unstacked Balance</span>
-            <span>{ERC20Balance}ET</span>
-          </li>
-          <li>
-            <span>Stacked Balance</span>
-            <span>
-              {userInfo?.amount
-                ? ethers.utils.formatEther(userInfo?.amount)
-                : 0}
-              ET
-            </span>
-          </li>
-          <li>
-            <span>Next reward amount</span>
-            <span>{pendingReward} ET</span>
-          </li>
-          <li>
-            <span> Next reward yield</span>
-            <span>{pendingReward} ET</span>
-          </li>
-          <li>
-            <span>Roi(5-day rate)</span>
-            <span>{Math.round(roi * 100) / 100}</span>
-          </li>
-        </StackingDetails>
+        {!active && <h2>Connect your wallet for custom details</h2>}
+        {active && (
+          <StackingDetails>
+            <li>
+              <span>Unstacked Balance</span>
+              <span>
+                {!ERC20Balance ? (
+                  <Loader
+                    type="TailSpin"
+                    color="#00BFFF"
+                    className="inline-block"
+                    height={10}
+                    width={10}
+                  />
+                ) : (
+                  `${ERC20Balance} ET`
+                )}
+              </span>
+            </li>
+            <li>
+              <span>Stacked Balance</span>
+              <span>
+                {!userInfo?.amount ? (
+                  <Loader
+                    type="TailSpin"
+                    color="#00BFFF"
+                    className="inline-block"
+                    height={10}
+                    width={10}
+                  />
+                ) : (
+                  `${
+                    userInfo?.amount
+                      ? ethers.utils.formatEther(userInfo?.amount)
+                      : 0
+                  } ET`
+                )}
+              </span>
+            </li>
+            <li>
+              <span>Next reward amount</span>
+              <span>
+                {!pendingReward ? (
+                  <Loader
+                    type="TailSpin"
+                    color="#00BFFF"
+                    className="inline-block"
+                    height={10}
+                    width={10}
+                  />
+                ) : (
+                  `${pendingReward} ET`
+                )}{" "}
+              </span>
+            </li>
+            <li>
+              <span> Next reward yield</span>
+              <span>
+                {!pendingReward ? (
+                  <Loader
+                    type="TailSpin"
+                    color="#00BFFF"
+                    className="inline-block"
+                    height={10}
+                    width={10}
+                  />
+                ) : (
+                  `${pendingReward} ET`
+                )}
+              </span>
+            </li>
+            <li>
+              <span>Roi(5-day rate)</span>
+              <span>
+                {!roi ? (
+                  <Loader
+                    type="TailSpin"
+                    color="#00BFFF"
+                    className="inline-block"
+                    height={10}
+                    width={10}
+                  />
+                ) : (
+                  `${Math.round(roi * 100) / 100} ET`
+                )}
+              </span>
+            </li>
+          </StackingDetails>
+        )}
       </div>
     </div>
   );

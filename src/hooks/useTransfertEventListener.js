@@ -1,4 +1,3 @@
-import { Contract } from "@ethersproject/contracts";
 import { utils } from "ethers";
 
 export const useTransfertEventListener = (

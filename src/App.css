@@ -1,3 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Toastify__progress-bar--success {
+  background: #245ce7 !important;
+}
+body {
+  background: #1a191e;
+  color: #fff;
+}
+.top0 {
+  top: 0;
+}
 .App {
   text-align: center;
 }
@@ -5,6 +19,19 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.hover-text {
+  transition: all 500ms;
+}
+.hover-text:hover {
+  color: #fff;
+}
+.hover-border {
+  transition: all 500ms;
+}
+.hover-border:hover {
+  border-color: #fff;
 }
 
 @media (prefers-reduced-motion: no-preference) {

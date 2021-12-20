@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { getLCP } from "web-vitals";
 
 import { getChefContract, getLP, getTokenContract, getUniSwapRouterContract } from "../utils/contractHelpers";
 import { accountLessProvider } from "../utils/injected";

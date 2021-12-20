@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import {
   useReadOnlyChefContract,
-  useReadOnlyLPContract,
   useReadOnlyTokenContract,
   useReadOnlyUniswapRouterContract,
 } from "../hooks/useContract";
@@ -13,10 +12,10 @@ import { USDT, WETH } from "../utils/contractHelpers";
 const dashboardContext = React.createContext({
   ERC20Name: null,
   ERC20Balance: null,
-  apy: 0,
-  totalDeposited: 0,
+  apy: null,
+  totalDeposited: null,
   userInfo: {},
-  remainingRewards: 0,
+  remainingRewards: null,
 });
 
 const DashboardProvider = ({ children }) => {
@@ -24,21 +23,21 @@ const DashboardProvider = ({ children }) => {
 
   const contract = useReadOnlyTokenContract();
   const chef = useReadOnlyChefContract();
-  const lp = useReadOnlyLPContract();
+
   const router = useReadOnlyUniswapRouterContract();
 
   const [ERC20Name, setERC20Name] = useState(null);
   const [ERC20Balance, setERC20Balance] = useState(null);
   const [allowance, setAllowance] = useState(0);
-  const [apy, setApy] = useState(0);
-  const [totalDeposited, setTotalDeposited] = useState(0);
+  const [apy, setApy] = useState(null);
+  const [totalDeposited, setTotalDeposited] = useState(null);
   const [userInfo, setUserInfo] = useState({});
   const [remainingRewards, setRemainingRewards] = useState(0);
   const [interval, setIntervalKey] = useState(0);
-  const [pendingReward, setPendingReward] = useState(0);
-  const [marketcap, setMarketcap] = useState(0);
-  const [price, setPrice] = useState(0);
-  const [roi, setRoi] = useState(0);
+  const [pendingReward, setPendingReward] = useState(null);
+  const [marketcap, setMarketcap] = useState(null);
+  const [price, setPrice] = useState(null);
+  const [roi, setRoi] = useState(null);
 
   const { Provider } = dashboardContext;
 
