@@ -29,6 +29,7 @@ export const Input = styled.input`
   }
 `;
 const StackingManager = () => {
+  const { active, login } = useAuth();
   const { activeLoad, disableLoad } = useContext(loadContext);
 
   const [depositMode, setDepositMode] = useState(false);
@@ -71,6 +72,10 @@ const StackingManager = () => {
           className="block sm:flex mb-8 justify-center flex-wrap"
           onSubmit={async (e) => {
             e.preventDefault();
+            if (!active) {
+              login();
+              return;
+            }
             if (locked) return;
             setLocked(true);
 
@@ -150,6 +155,10 @@ const StackingManager = () => {
           className="block sm:flex mb-8 justify-center flex-wrap"
           onSubmit={async (e) => {
             e.preventDefault();
+            if (!active) {
+              login();
+              return;
+            }
             if (locked) return;
             setLocked(true);
 
